@@ -63,9 +63,9 @@ flowchart LR
 ## 1. Open and prepare your Linux environment
 
 Start with a GitHub account that can create Codespaces for this repository.
-The workshop configuration and instructions are available on `main`, and the
-container image is already published. You do not need the original setup branch
-or to build the image yourself.
+The workshop configuration and instructions are available on `main`. The dev
+container builds its image from [Dockerfile](Dockerfile) when it is created, so
+no registry access is needed. You do not need the original setup branch.
 
 Use **4 cores and 16 GB RAM** where available. There is no GPU requirement.
 GitHub Codespaces compute and storage may be billable; check your spending
@@ -76,7 +76,7 @@ limit before creating a machine.
 You do not need GitHub CLI, Docker, or a local terminal to create the
 environment. GitHub reads
 [.devcontainer/devcontainer.json](../../.devcontainer/devcontainer.json)
-automatically and starts the published workshop image.
+automatically and builds the workshop image from [Dockerfile](Dockerfile).
 
 **Before creating the Codespace**, review the
 [Foundry Local CLI license](https://github.com/microsoft/foundry-local/blob/main/LICENSE)
@@ -110,17 +110,13 @@ does not update an existing one. If you previously used the old configuration
 under `docs/codespaces`, create a new Codespace from `main` after saving your
 work; the default configuration now lives under `.devcontainer`.
 
-If the image is private, your account and the repository's Codespaces
-configuration need package read access. This release is currently private.
-See [package access](IMAGE.md#package-access).
 Do not paste a token into `devcontainer.json`.
 
-To run the lab locally in VS Code without GHCR access, choose the
-**MCP workshop - Foundry Local on Linux (local build)** configuration in
-[.devcontainer/local-build/devcontainer.json](../../.devcontainer/local-build/devcontainer.json).
-It builds the image from [Dockerfile](Dockerfile) on your machine. The image is
-`linux/amd64` only, so Apple Silicon hosts run it under emulation (Rosetta in
-Docker Desktop or OrbStack).
+The same configuration also runs locally: open the repository in VS Code with
+the Dev Containers extension and a running Docker engine (Docker Desktop or
+OrbStack), then choose **Dev Containers: Reopen in Container**. The image is
+`linux/amd64` only, so Apple Silicon hosts run it under emulation (Rosetta),
+and the first build and setup take longer.
 
 ### Wait for automatic installation
 
@@ -386,14 +382,14 @@ remain billable until deletion.
 
 Stopping and restarting preserves the environment. Rebuilding the container
 keeps `/workspaces` but can remove home-directory CLI/model caches and installed
-symlinks; rerun the setup command after a rebuild. A new Codespace starts from
-the published image and performs its own initial downloads automatically.
+symlinks; rerun the setup command after a rebuild. A new Codespace builds
+the image from the Dockerfile and performs its own initial downloads automatically.
 
 ### Troubleshooting
 
 | Symptom | Action |
 |---|---|
-| `denied` when pulling the image | Ask the facilitator to grant package/Codespaces access or make the package public if approved |
+| Image build fails fetching packages | Check network access to `mcr.microsoft.com`, `deb.debian.org` and PyPI, then rebuild the container |
 | `No module named fastmcp` | Check `which python`; it should select `/opt/workshop-venv/bin/python`, not a manually created `.venv` |
 | `No module named foundry_local_sdk` or missing `.venv/bin/python` | Restore the workshop environment using the commands below; the image's SDK may already be installed |
 | Windows packages fail to install | Do not use the Windows lock; recreate the Codespace with this configuration |

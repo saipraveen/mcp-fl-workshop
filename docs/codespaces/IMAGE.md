@@ -168,9 +168,14 @@ rmdir "$docker_config"
 
 If publishing fails, still run the logout and cleanup commands. A successful
 push prints a `sha256:...` digest. Record the full `ghcr.io/...@sha256:...`
-reference and use it in
-[.devcontainer/devcontainer.json](../../.devcontainer/devcontainer.json) to prevent
-an accidental tag update from changing the learner environment.
+reference so the published release can be identified later.
+
+[.devcontainer/devcontainer.json](../../.devcontainer/devcontainer.json) no longer
+pulls this image: it builds from [Dockerfile](Dockerfile) so learners and local
+VS Code users do not need GHCR access. The base image digest and the Linux lock
+file keep that build repeatable. To switch back to the published image, replace
+its `build` block with `"image": "ghcr.io/...@sha256:..."` and grant package
+access as described below.
 
 ### Package access
 
@@ -197,8 +202,9 @@ or Docker installation is required.
 
 GitHub discovers the default configuration automatically. For machine and
 region choices, learners can use **... > New with options** and select
-4 cores / 16 GB RAM or larger. The published image does not contain the
-repository checkout; Codespaces clones `main` separately.
+4 cores / 16 GB RAM or larger. The configuration builds the image from the
+Dockerfile, which does not contain the repository checkout; Codespaces clones
+`main` separately.
 
 The previous `docs/codespaces/devcontainer.json` has moved to the default
 location so there is only one configuration to maintain. Update any saved
