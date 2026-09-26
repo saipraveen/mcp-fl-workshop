@@ -115,6 +115,13 @@ configuration need package read access. This release is currently private.
 See [package access](IMAGE.md#package-access).
 Do not paste a token into `devcontainer.json`.
 
+To run the lab locally in VS Code without GHCR access, choose the
+**MCP workshop - Foundry Local on Linux (local build)** configuration in
+[.devcontainer/local-build/devcontainer.json](../../.devcontainer/local-build/devcontainer.json).
+It builds the image from [Dockerfile](Dockerfile) on your machine. The image is
+`linux/amd64` only, so Apple Silicon hosts run it under emulation (Rosetta in
+Docker Desktop or OrbStack).
+
 ### Wait for automatic installation
 
 Creating the Codespace uses only the browser controls above. GitHub runs

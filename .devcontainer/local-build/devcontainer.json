@@ -1,0 +1,36 @@
+{
+  "name": "MCP workshop - Foundry Local on Linux (local build)",
+  "build": {
+    "dockerfile": "../../docs/codespaces/Dockerfile",
+    "context": "../..",
+    "options": ["--platform=linux/amd64"]
+  },
+  "runArgs": ["--platform=linux/amd64"],
+  "remoteUser": "vscode",
+  "remoteEnv": {
+    "VIRTUAL_ENV": "/opt/workshop-venv",
+    "MCP_WORKSHOP_PYTHON": "/opt/workshop-venv/bin/python",
+    "PATH": "/opt/workshop-venv/bin:${containerEnv:PATH}"
+  },
+  "forwardPorts": [7932],
+  "portsAttributes": {
+    "7932": {
+      "label": "Bharat Travel Desk",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": [
+    "bash",
+    "docs/codespaces/setup.sh",
+    "--accept-cli-license"
+  ],
+  "waitFor": "postCreateCommand",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python"],
+      "settings": {
+        "python.defaultInterpreterPath": "/opt/workshop-venv/bin/python"
+      }
+    }
+  }
+}
