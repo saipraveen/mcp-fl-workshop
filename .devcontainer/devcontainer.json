@@ -1,6 +1,11 @@
 {
   "name": "MCP workshop - Foundry Local on Linux",
-  "image": "ghcr.io/globalaicommunity/mcp-fl-workshop@sha256:7dcf83a3117092b7afabdfc5c9abf00f7a8808cec64816949f0835401a5e3390",
+  "build": {
+    "dockerfile": "../docs/codespaces/Dockerfile",
+    "context": "..",
+    "options": ["--platform=linux/amd64"]
+  },
+  "runArgs": ["--platform=linux/amd64"],
   "remoteUser": "vscode",
   "remoteEnv": {
     "VIRTUAL_ENV": "/opt/workshop-venv",
